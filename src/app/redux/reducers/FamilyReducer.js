@@ -57,6 +57,13 @@ const FamilyReducer = (state = initialState, action) => {
         error: null,
         loading: false,
       };
+    case FC.RESET_FAMILY: 
+      return{
+        ...state,
+        listFamily: [],
+        error: null,
+        loading: false,
+      }
     default:
       return state;
   }

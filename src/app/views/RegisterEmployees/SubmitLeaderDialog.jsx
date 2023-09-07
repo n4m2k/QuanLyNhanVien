@@ -171,8 +171,8 @@ const SubmitLeaderDialog = ({
       >
         <DialogTitle id="form-dialog-title">
           <span className="mb-20 styleColor">Trình lãnh đạo</span>
-          <IconButton aria-label="close" className={classes.iconClose}>
-            <CloseIcon color="error" onClick={handleCloseSubmitLeaderDialog} />
+          <IconButton aria-label="close" className={classes.iconClose}  onClick={handleCloseSubmitLeaderDialog} >
+            <CloseIcon color="error"/>
           </IconButton>
         </DialogTitle>
         <ValidatorForm onSubmit={handleSubmit}>

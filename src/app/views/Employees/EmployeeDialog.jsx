@@ -27,6 +27,8 @@ import { toast } from "react-toastify";
 import { countObjectKeys } from "utils";
 import { TAB_EMPLOYEE } from "app/Constants/ListTab";
 import { TOTAL_OBJECTS_KEY_EMPLOYEE } from "app/Constants/ListSelectItem";
+import { resetFamily } from "app/redux/actions/FamilyAction";
+import { resetCertificate } from "app/redux/actions/CertificateAction";
 const useStyles = makeStyles({
   colorStyle: {
     color: "red",
@@ -63,6 +65,9 @@ const EmployeeDialog = ({
   };
 
   const handleClose = () => {
+    dispatch(resetFamily());
+    dispatch(resetCertificate());
+    setFamily([]);
     setCertificate([]);
     onClose();
   };
@@ -131,8 +136,8 @@ const EmployeeDialog = ({
           <span className="mb-20 styleColor">
             {isViewMode ? "Xem thông tin nhân viên" : title}
           </span>
-          <IconButton aria-label="close" className={classes.iconClose}>
-            <CloseIcon color="error" onClick={handleClose} />
+          <IconButton aria-label="close" className={classes.iconClose} onClick={handleClose}>
+            <CloseIcon color="error"/>
           </IconButton>
         </DialogTitle>
 

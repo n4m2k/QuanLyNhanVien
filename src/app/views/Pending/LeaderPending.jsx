@@ -14,7 +14,6 @@ import { TAB_LEADER_PENDING } from "app/Constants/ListTab";
 const Pending = () => {
   const { t } = useTranslation();
   const [openTableFromTag, setOpenTableFromTag] = useState(0);
-
   const [activeTab, setActiveTab] = useState(0);
 
   const handleTabChange = (event, newValue) => {
@@ -35,7 +34,10 @@ const Pending = () => {
           indicatorColor="primary"
           textColor="primary"
           className="mt-12"
-          centered
+          variant="scrollable"
+          scrollButtons
+          allowScrollButtonsMobile
+          aria-label="scrollable force tabs example"
         >
           <Tab label={TAB_LEADER_PENDING.CHO_DUYET.LABEL} />
           <Tab label={TAB_LEADER_PENDING.CHO_DUYET_TANG_LUONG.LABEL} />

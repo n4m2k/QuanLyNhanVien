@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import PersonOffIcon from "@mui/icons-material/PersonOff";
 import {
   Grid,
   IconButton,
   makeStyles,
   Avatar,
+  Icon,
 } from "@material-ui/core";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -72,7 +71,7 @@ const PendingTable = ({ title }) => {
       title: "Thao tác",
       field: "custom",
       align: "center",
-      width: "5%",
+      width: "2%",
       render: (data) => {
         return Number(data?.submitProfileStatus) === 2 ? (
           <IconButton
@@ -80,7 +79,7 @@ const PendingTable = ({ title }) => {
               showEmployeeData(data, data?.submitProfileStatus);
             }}
           >
-            <PersonAddIcon color="primary"></PersonAddIcon>
+             <Icon color="primary">visibility</Icon>
           </IconButton>
         ) : (
           <IconButton
@@ -88,7 +87,7 @@ const PendingTable = ({ title }) => {
               showGeneralForm(data);
             }}
           >
-            <PersonOffIcon color="error"></PersonOffIcon>
+             <Icon color="primary">visibility</Icon>
           </IconButton>
         );
       },
@@ -97,7 +96,7 @@ const PendingTable = ({ title }) => {
       title: "Hình ảnh  ",
       field: "image",
       align: "left",
-      width: "5%",
+      width: "2%",
       render: (row) => (
         <div className="center-avatar">
         <Avatar alt="#" src={row?.image} className="mt-4 mb-4 "></Avatar>
@@ -126,7 +125,7 @@ const PendingTable = ({ title }) => {
       title: "Số điện thoại",
       field: "phone",
       align: "left",
-      width: "5%",
+      width: "2%",
     },
     {
       title: "Ngày sinh",
@@ -185,7 +184,7 @@ const PendingTable = ({ title }) => {
   return (
     <div>
       <Grid className={styleClass?.inputSearch}>
-        <h4 className="mt-16 mb-16"> {"Danh sách " + title} </h4>
+        <h4> </h4>
         <SearchComponent
           keywords={searchInputValue}
           setKeywords={setSearchInputValue}

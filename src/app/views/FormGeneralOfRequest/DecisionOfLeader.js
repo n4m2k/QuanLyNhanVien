@@ -49,8 +49,8 @@ return (
     <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle id="draggable-dialog-title">
         <span className="styleColor">Quyết định của lãnh đạo</span>
-        <IconButton aria-label="close" className={styleClass.iconClose}>
-          <CloseIcon color="error" onClick={onClose} />
+        <IconButton aria-label="close" className={styleClass.iconClose} onClick={onClose}>
+          <CloseIcon color="error" />
         </IconButton>
       </DialogTitle>
       <DialogContent className="no-scroll-dialog" dividers>

@@ -21,6 +21,7 @@ import {
   createProposalRequest,
   deleteProposalRequest,
   updateProposalRequest,
+  clearListProposal,
 } from "app/redux/actions/ProposalAction";
 import { getNameById, removeMultipleSpaces } from "utils/handleGeneral";
 import "../../../Validate/Validate";
@@ -44,6 +45,7 @@ const Proposal = ({ employee }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearListProposal());
     dispatch(getAllLeadersRequest());
     dispatch(getListProposalByEmployeeIdRequest(employee?.id));
   }, [employee?.id]);
@@ -126,13 +128,6 @@ const Proposal = ({ employee }) => {
           </Grid>
         );
       },
-    },
-
-    {
-      title: "Mã đơn",
-      field: "id",
-      align: "center",
-      width: "5%",
     },
     {
       title: "Loại",
@@ -313,7 +308,6 @@ const Proposal = ({ employee }) => {
               name="note"
               label={
                 <span>
-                  <span className="red-color"> * </span>
                   Ghi chú
                 </span>
               }
@@ -321,8 +315,8 @@ const Proposal = ({ employee }) => {
               value={dataProposal?.note || ""}
               onChange={handleChange}
               fullWidth
-              validators={["required" , "maxStringLength:500"]}
-              errorMessages={["Vui lòng nhập Ghi chú", "Nhập tối đa 500 ký tự"]}
+              validators={[ "maxStringLength:500"]}
+              errorMessages={["Nhập tối đa 500 ký tự"]}
               placeholder="Nhập Ghi chú"
               size="small"
               variant="outlined"

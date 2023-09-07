@@ -20,61 +20,87 @@ import {
   import * as EC from "../constants/ProcessConstants";
 
   function* getListPendingProcessSaga() {
-    const response = yield call(getListPendingProcess);
-    if (response?.code === 200) {
-      yield put(getListPendingProcessSuccess(response?.data));
-    } else {
-      yield put(getListPendingProcessFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-  function* getListProcessByEmployeeIdSaga(action) {
-    const response = yield call(getListProcessByEmployeeId , action?.employeeId);
-    if (response?.code === 200) {
-      yield put(getListProcessByEmployeeIdSuccess(response?.data));
- 
-    } else {
-      yield put(getListProcessByEmployeeIdFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-    function* createProcessSaga(action) {
-    const response = yield call( createProcess,  action?.payload , action?.id);
-    if (response?.code === 200) {
-      yield put(createProcessSuccess(response?.data));
-      toast.success("Thành công");
-      yield put(getListProcessByEmployeeIdRequest(action?.id) ) 
-    } else {
-      yield put(createProcessFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-  function* deleteProcessSaga(action) {
-    const response = yield call( deleteProcess,  action?.payload);
-    if (response?.code === 200) {
-      yield put(deleteProcessSuccess(response?.data));
-      toast.success("Xóa Thành công");
-      yield put(getListProcessByEmployeeIdRequest(action?.employeeId) ) 
-    } else {
-      yield put(deleteProcessFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-
-  function* updateProcessSaga(action) {
-    const response = yield call( updateProcess , action?.payload?.id ,  action?.payload );
-    if (response?.code === 200) {
-      yield put(updateProcessSuccess(response?.data));
-      toast.success("Cập nhật Thành công");
-      if(action?.employeeId){
-        yield put(getListProcessByEmployeeIdRequest(action?.employeeId) ) 
-      }else{
-        yield put(getListPendingProcessRequest()) 
+    try {
+      const response = yield call(getListPendingProcess);
+      if (response?.code === 200) {
+        yield put(getListPendingProcessSuccess(response?.data));
+      } else {
+        yield put(getListPendingProcessFail(response?.message));
+        toast.error(response?.message);
       }
-    
-    } else {
-      yield put(updateProcessFail(response?.message));
-      toast.error(response?.message);
+    } catch (error) {
+      yield put(getListPendingProcessFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* getListProcessByEmployeeIdSaga(action) {
+    try {
+      const response = yield call(getListProcessByEmployeeId, action?.employeeId);
+      if (response?.code === 200) {
+        yield put(getListProcessByEmployeeIdSuccess(response?.data));
+      } else {
+        yield put(getListProcessByEmployeeIdFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(getListProcessByEmployeeIdFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* createProcessSaga(action) {
+    try {
+      const response = yield call(createProcess, action?.payload, action?.id);
+      if (response?.code === 200) {
+        yield put(createProcessSuccess(response?.data));
+        toast.success("Thành công");
+        yield put(getListProcessByEmployeeIdRequest(action?.id));
+      } else {
+        yield put(createProcessFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(createProcessFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* deleteProcessSaga(action) {
+    try {
+      const response = yield call(deleteProcess, action?.payload);
+      if (response?.code === 200) {
+        yield put(deleteProcessSuccess(response?.data));
+        toast.success("Xóa Thành công");
+        yield put(getListProcessByEmployeeIdRequest(action?.employeeId));
+      } else {
+        yield put(deleteProcessFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(deleteProcessFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* updateProcessSaga(action) {
+    try {
+      const response = yield call(updateProcess, action?.payload?.id, action?.payload);
+      if (response?.code === 200) {
+        yield put(updateProcessSuccess(response?.data));
+        toast.success("Cập nhật Thành công");
+        if (action?.employeeId) {
+          yield put(getListProcessByEmployeeIdRequest(action?.employeeId));
+        } else {
+          yield put(getListPendingProcessRequest());
+        }
+      } else {
+        yield put(updateProcessFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(updateProcessFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
     }
   }
 

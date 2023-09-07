@@ -21,6 +21,7 @@ import {
   createProcessRequest,
   deleteProcessRequest,
   updateProcessRequest,
+  clearListProcess,
 } from "app/redux/actions/ProcessAction";
 import { getNameById, removeMultipleSpaces } from "utils/handleGeneral";
 import GeneralOfRequestForm from "app/views/FormGeneralOfRequest/GeneralOfRequestForm";
@@ -48,6 +49,7 @@ const Process = ({ employee }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    dispatch(clearListProcess());
     dispatch(getAllLeadersRequest());
     dispatch(getListProcessByEmployeeIdRequest(employee?.id));
   }, [employee?.id]);
@@ -132,13 +134,6 @@ const Process = ({ employee }) => {
           </Grid>
         );
       },
-    },
-
-    {
-      title: "Mã đơn",
-      field: "id",
-      align: "center",
-      width: "5%",
     },
     {
       title: "Vị trí mới",
@@ -283,7 +278,6 @@ const Process = ({ employee }) => {
                 name="note"
                 label={
                   <span>
-                    <span className="red-color"> * </span>
                     Ghi chú
                   </span>
                 }
@@ -291,9 +285,8 @@ const Process = ({ employee }) => {
                 value={dataProcess?.note || ""}
                 onChange={handleChange}
                 fullWidth
-                validators={["required", "maxStringLength:500"]}
+                validators={[ "maxStringLength:500"]}
                 errorMessages={[
-                  "Vui lòng nhập Ghi chú",
                   "Nhập tối đa 500 ký tự",
                 ]}
                 placeholder="Nhập Ghi chú"

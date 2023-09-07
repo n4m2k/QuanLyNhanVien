@@ -12,7 +12,7 @@ import { formatCurrency, getNameById } from "utils/handleGeneral";
 import GeneralOfRequestForm from "../../FormGeneralOfRequest/GeneralOfRequestForm";
 import { ACTION_SALARY_INCREASE } from "app/Constants/ListNameTab";
 import MaterialTableComponent from "app/views/Component/MaterialTableComponent/MaterialTableComponent";
-import { LIST_POSITION } from "app/Constants/ListSelectItem";
+import { LIST_POSITION, ROW_PER_PAGE } from "app/Constants/ListSelectItem";
 
 const useStyles = makeStyles({
   redColor: {
@@ -51,7 +51,7 @@ const SalaryIncreaseTable = ({ title }) => {
       title: "Thao Tác",
       field: "custom",
       align: "center",
-      width: "5%",
+      width: "2%",
       render: (data) => {
         return (
           <IconButton
@@ -65,26 +65,15 @@ const SalaryIncreaseTable = ({ title }) => {
       },
     },
     {
-      title: "Mã phiếu  ",
-      field: "id",
-      align: "center",
-      width: "5%",
-    },
-    {
-      title: "Lần",
-      field: "times",
-      align: "center",
-      width: "5%",
-    },
-    {
       title: "Vị trí hiện tại",
       field: "currentPosition",
-      align: "center",
+      align: "left",
       width: "5%",
       render: (data)=>{
         return (getNameById(Number(data?.currentPosition), LIST_POSITION))
       }
     },
+    
     {
       title: "Lương cũ",
       field: "oldSalary",
@@ -98,6 +87,20 @@ const SalaryIncreaseTable = ({ title }) => {
       align: "center",
       width: "5%",
       render: (data) => <span> {formatCurrency(data?.newSalary)} </span>
+    },
+    {
+      title: "Lý do",
+      field: "reason",
+      align: "left",
+      width: "10%",
+      render: (data) => <span className="max-width-column">{data?.reason}</span>,
+    },
+    {
+      title: "Ghi chú",
+      field: "note",
+      align: "left",
+      width: "10%",
+      render: (data) => <span className="max-width-column">{data?.note}</span>,
     },
     {
       title: "Ngày bắt đầu",
@@ -129,7 +132,7 @@ const SalaryIncreaseTable = ({ title }) => {
   return (
     <div>
       <Grid className={styleClass?.inputSearch}>
-        <h4 className="mt-16 mb-16"> {"Danh sách " + title} </h4>
+        <h4 className="mt-16 mb-16 height-title"> </h4>
       </Grid>
       <Grid container spacing={3}>
         <Grid item lg={12} md={12} sm={12} xs={12}>
@@ -137,7 +140,7 @@ const SalaryIncreaseTable = ({ title }) => {
             columns={columns}
             data={listSalaryIncrease}
             paging={true}
-            pageSize={10}
+            pageSize={ROW_PER_PAGE.KEY}
             height={"540px"}
           ></MaterialTableComponent>
         </Grid>

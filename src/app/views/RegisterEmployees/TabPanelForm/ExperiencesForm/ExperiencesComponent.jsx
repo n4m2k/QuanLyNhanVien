@@ -1,5 +1,8 @@
-import { Grid, Icon, IconButton, TextField } from "@material-ui/core";
+import { IconButton, TextField } from "@material-ui/core";
 import React, { useState, useEffect } from "react";
+import AddIcon from "@material-ui/icons/Add";
+import EditIcon from "@material-ui/icons/Edit";
+import DeleteIcon from "@material-ui/icons/Delete";
 import ExperiencesForm from "./ExperiencesForm";
 import {
   deleteExperience,
@@ -79,11 +82,9 @@ const ExperiencesComponent = ({ employee, isViewMode }) => {
 
   return (
     <div>
-      <Grid>
-        <Grid container className="flex-space-between mb-4">
-          <h3 className="font-weight-bold my-auto  custom-font">
-            {"KINH NGHIỆM LÀM VIỆC"}{" "}
-          </h3>
+      <div className="children-sort box-parent">
+        <div className="box-title">
+          <h3 className="change-title">Kinh nghiệm làm việc</h3>
           <IconButton
             size="medium"
             onClick={() => {
@@ -91,11 +92,9 @@ const ExperiencesComponent = ({ employee, isViewMode }) => {
             }}
             className={isViewMode ? "hidden" : ""}
           >
-            <Icon fontSize="large" color="default">
-              add
-            </Icon>
+            <AddIcon fontSize="large" color="default"></AddIcon>
           </IconButton>
-        </Grid>
+        </div>
         {showDialogExp && (
           <ExperiencesForm
             onClose={handleCloseDialog}
@@ -104,94 +103,76 @@ const ExperiencesComponent = ({ employee, isViewMode }) => {
             handleGetExperience={handleGetExperience}
           ></ExperiencesForm>
         )}
-        {listExperiences &&
-          listExperiences.map((item) => {
-            return (
-              <Grid item key={item.id}  className="mb-16 experience-item">
-                <Grid
-                  container
-                  spacing={1}
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                >
-                  <div className="companyName-class">
-                    <span className="date-font line-break">
-                      {item.companyName}
-                    </span>
-                    <span className="experience-buttons">
-                      <IconButton
-                        size="small"
-                        onClick={() => {
-                          handleEditExp(item);
-                        }}
-                        className={isViewMode ? "hidden" : ""}
-                      >
-                        <Icon color="primary">edit</Icon>
-                      </IconButton>
-                      <IconButton
-                        size="small"
-                        onClick={() => {
-                          handleDeleteExp(item?.id);
-                        }}
-                        className={isViewMode ? "hidden" : ""}
-                      >
-                        <Icon color="error">delete</Icon>
-                      </IconButton>
-                    </span>
+        <div className="experience-class">
+          {listExperiences &&
+            listExperiences.map((item ) => {
+              return (
+                <div key={item.id} className="box-time-line">
+                  <div className="time-name-company">
+                    <div className="box-date">
+                      <div className="date-1">
+                        {moment(item.startDate).format("DD/MM/YYYY")}
+                      </div>
+                      <span className="allow-select-time"> - </span>
+                      <div className="date-1">
+                        {moment(item.endDate).format("DD/MM/YYYY")}
+                      </div>
+                    </div>
+                    <div className="block-child">
+                      <h3>{item.companyName}</h3>
+                    </div>
                   </div>
-                </Grid>
-                <Grid
-                  container
-                  spacing={1}
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className="mb-8"
-                >
-                  <div className="box-date">
-                    <span class="date-font">
-                      {moment(item.startDate).format("DD/MM/YYYY")}
-                    </span>
-                    <span className="font-weight-bold icon-custom">-</span>
-                    <span class="date-font">
-                      {moment(item.endDate).format("DD/MM/YYYY")}
-                    </span>
+                  <div className="description-title">
+                    <h3>Mô tả công việc</h3>
+                    <div className="buttons-exp">
+                      <span>
+                        <IconButton
+                          size="small"
+                          onClick={() => {
+                            handleEditExp(item);
+                          }}
+                          className={
+                            isViewMode
+                              ? "hidden experience-buttons-edit"
+                              : "experience-buttons-edit"
+                          }
+                        >
+                          <EditIcon color="primary"></EditIcon>
+                        </IconButton>
+                        <IconButton
+                          size="small"
+                          onClick={() => {
+                            handleDeleteExp(item?.id);
+                          }}
+                          className={
+                            isViewMode
+                              ? "hidden experience-buttons-delete"
+                              : "experience-buttons-delete"
+                          }
+                        >
+                          <DeleteIcon color="error"></DeleteIcon>
+                        </IconButton>
+                      </span>
+                    </div>
                   </div>
-                </Grid>
-                <Grid
-                  container
-                  spacing={1}
-                  lg={12}
-                  md={12}
-                  sm={12}
-                  xs={12}
-                  className="mb-8 description-container"
-                >
-                  <div className="box-description">
-                     <h4>Mô tả công việc:</h4>
-                    <span className="description-exp">
-                      <TextField
-                        type="text"
-                        value={item.jobDescription}
-                        readOnly
-                        multiline
-                        className="area-dotted-exp"
-                        fullWidth
-                        size="small"
-                        InputProps={{
-                          readOnly: isViewMode,
-                        }}
-                      />
-                    </span>
+                  <div className="description-content">
+                    <TextField
+                      type="text"
+                      value={item.jobDescription}
+                      readOnly
+                      multiline
+                      fullWidth
+                      size="small"
+                      InputProps={{
+                        readOnly: isViewMode,
+                      }}
+                    />
                   </div>
-                </Grid>
-              </Grid>
-            );
-          })}
-      </Grid>
+                </div>
+              );
+            })}
+        </div>
+      </div>
       {showDeleteDialogExp && (
         <ConfirmationDialog
           open={showDeleteDialogExp}

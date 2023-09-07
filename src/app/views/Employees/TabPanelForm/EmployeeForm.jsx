@@ -6,10 +6,11 @@ import {
   TextValidator,
 } from "react-material-ui-form-validator";
 import { GENDER, TEAM } from "app/Constants/ListSelectItem";
-import { isBase64Image } from "utils";
+import { isBase64Image, validateImage } from "utils";
 import { getImage, uploadImage } from "app/redux/api/apiEmployees";
 import moment from "moment/moment";
 import "../../../Validate/Validate";
+import { toast } from "react-toastify";
 const EmployeeForm = ({
   handleInputChange,
   employee,
@@ -19,23 +20,38 @@ const EmployeeForm = ({
   const [imagePreview, setImagePreview] = useState(employee?.image || "");
   const handleImageChange = (e) => {
     const file = e.target.files[0];
+  
+    if (!file) {
+      return;
+    }
+  
+    const validationError = validateImage(file);
+  
+    if (validationError) {
+      toast.error(validationError);
+      return;
+    }
+  
     const formData = new FormData();
     formData.append("file", file);
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = () => {
-        setImagePreview(reader.result);
-      };
-      reader.readAsDataURL(file);
-      uploadImage(formData).then((response) =>
-        getImage(response.data.name).then((res) => {
-          const updatedEmployee = { ...employee, image: res.config.url };
-          setEmployee(updatedEmployee);
-        })
-      );
-    }
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      setImagePreview(reader.result);
+    };
+    reader.readAsDataURL(file);
+  
+    uploadImage(formData).then((response) =>
+      getImage(response.data.name).then((res) => {
+        const updatedEmployee = { ...employee, image: res.config.url };
+        setEmployee(updatedEmployee);
+      })
+    );
+  
     e.target.value = "";
   };
+  
+
   return (
     <div>
       <Grid container spacing={2}>
@@ -88,7 +104,10 @@ const EmployeeForm = ({
                 value={employee?.code || ""}
                 onChange={handleInputChange}
                 fullWidth
-                validators={["required", `matchRegexp:^NV${moment().format('YY')}\\d{3}$`]}
+                validators={[
+                  "required",
+                  `matchRegexp:^NV${moment().format("YY")}\\d{3}$`,
+                ]}
                 errorMessages={[
                   "Vui lòng nhập mã code",
                   "Mã nhân viên không hợp lệ. Gợi ý: NV + Năm hiện tại + 3 số",
@@ -115,13 +134,13 @@ const EmployeeForm = ({
                 fullWidth
                 validators={[
                   "required",
-                  'matchRegexp:^[^0-9!@#$%^&*(),.?":{}|<>]+$',
-                  'maxStringLength:30'
+                  "noSpecialCharactersOrDigits",
+                  "maxStringLength:30",
                 ]}
                 errorMessages={[
                   "Vui lòng nhập tên",
                   "Tên không chứa số và kí tự đặc biệt",
-                  "Tên không quá 30 ký tự"
+                  "Tên không quá 30 ký tự",
                 ]}
                 placeholder="Nhập Họ và tên"
                 size="small"
@@ -182,8 +201,8 @@ const EmployeeForm = ({
                     : ""
                 }
                 fullWidth
-                validators={["required", "equalEighteenYearsAgo"]}
-                errorMessages={["Vui lòng nhập ngày sinh", "Phải trên 18 tuổi"]}
+                validators={["required", "equalEighteenYearsAgo", "ageBelow65"]}
+                errorMessages={["Vui lòng nhập ngày sinh", "Phải trên 18 tuổi", "Phải nhỏ hơn 65 tuổi"]}
                 variant="outlined"
                 size="small"
                 InputLabelProps={{
@@ -209,8 +228,11 @@ const EmployeeForm = ({
                 value={employee?.address || ""}
                 onChange={handleInputChange}
                 fullWidth
-                validators={["required", 'maxStringLength:60']}
-                errorMessages={["Vui lòng nhập địa chỉ", "Địa chỉ không quá 60 ký tự"]}
+                validators={["required", "maxStringLength:60"]}
+                errorMessages={[
+                  "Vui lòng nhập địa chỉ",
+                  "Địa chỉ không quá 60 ký tự",
+                ]}
                 placeholder="Nhập địa chỉ"
                 size="small"
                 variant="outlined"
@@ -261,11 +283,12 @@ const EmployeeForm = ({
                 name="citizenIdentificationNumber"
                 value={employee?.citizenIdentificationNumber}
                 fullWidth
-                validators={["required", "isNumber", "matchRegexp:^\\d{12}$"]}
+                placeholder="Nhập CCCD"
+                validators={["required", "isNumber", "citizenIdentificationNumberLength"]}
                 errorMessages={[
                   "Vui lòng nhập căn cước công dân",
                   "Căn cước công dân phải là số",
-                  "Căn cước công dân phải 12 số",
+                  "Căn cước công dân phải 9 số hoặc 12 số",
                 ]}
                 variant="outlined"
                 size="small"
@@ -285,11 +308,12 @@ const EmployeeForm = ({
                 onChange={handleInputChange}
                 name="phone"
                 value={employee?.phone}
+                placeholder="Nhập số điện thoại"
                 fullWidth
                 validators={[
                   "required",
                   "isNumber",
-                  "matchRegexp:^([0]{1}[0-9]{9})?$",
+                  "phoneNumber",
                 ]}
                 errorMessages={[
                   "Vui lòng nhập số điện thoại",
@@ -316,6 +340,7 @@ const EmployeeForm = ({
                 name="email"
                 value={employee?.email}
                 fullWidth
+                placeholder="Nhập email"
                 validators={["required", "isEmail"]}
                 errorMessages={[
                   "Vui lòng nhập email",
@@ -340,9 +365,10 @@ const EmployeeForm = ({
                 name="ethnic"
                 value={employee?.ethnic}
                 fullWidth
+                placeholder="Nhập dân tộc"
                 validators={[
                   "required",
-                  'matchRegexp:^[^0-9!@#$%^&*(),.?":{}|<>]+$',
+                  'noSpecialCharactersOrDigits',
                 ]}
                 errorMessages={[
                   "Vui lòng nhập dân tộc",
@@ -367,9 +393,10 @@ const EmployeeForm = ({
                 name="religion"
                 value={employee?.religion}
                 fullWidth
+                placeholder="Nhập tôn giáo"
                 validators={[
                   "required",
-                  'matchRegexp:^[^0-9!@#$%^&*(),.?":{}|<>]+$',
+                  'noSpecialCharactersOrDigits',
                 ]}
                 errorMessages={[
                   "Vui lòng nhập tôn giáo",
@@ -423,8 +450,12 @@ const EmployeeForm = ({
                 name="placeOfIssueCard"
                 value={employee?.placeOfIssueCard || ""}
                 fullWidth
-                validators={["required", 'maxStringLength:60']}
-                errorMessages={["Vui lòng nhập nơi cấp", "Nơi cấp không quá 60 ký tự"]}
+                placeholder="Nhập nơi cấp"
+                validators={["required", "maxStringLength:60"]}
+                errorMessages={[
+                  "Vui lòng nhập nơi cấp",
+                  "Nơi cấp không quá 60 ký tự",
+                ]}
                 variant="outlined"
                 size="small"
                 InputProps={{

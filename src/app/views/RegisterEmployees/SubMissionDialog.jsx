@@ -8,9 +8,9 @@ import {
 } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
 import moment from "moment";
-import ConfirmDialog from "../Component/Dialog/ConfirmDialog";
 import {
-  STATUS_EMPLOYEE,STATUS_OF_END_EMPLOYEE
+  STATUS_EMPLOYEE,
+  STATUS_OF_END_EMPLOYEE,
 } from "app/Constants/ListStatus";
 import { useDispatch } from "react-redux";
 import { updateEmployees } from "app/redux/actions/EmployeeActions";
@@ -21,27 +21,12 @@ const SubMissionDialog = ({
   employee,
   handleCloseRegisterDialog,
 }) => {
-  const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
   const [decisionInput, setDecisionInput] = useState({
-    numberSaved: "",
+    numberSaved: `NL${moment().format("MMYY")}${employee?.code?.slice(-3)}`,
     decisionDay: moment(new Date()).format("YYYY-MM-DD"),
   });
 
   const dispatch = useDispatch();
-
-  const title = "Bạn có chắc muốn nộp lưu";
-
-  ValidatorForm.addValidationRule(`matchDecisionCode`, (value) => {
-    const regexPattern = employee?.code
-      ? new RegExp(`^NL${moment().format("MMYY")}${employee.code.slice(-3)}`)
-      : null;
-
-    if (regexPattern && value) {
-      return regexPattern.test(value);
-    }
-    return true;
-  });
-
   const handleInputChange = (e) => {
     setDecisionInput({
       ...decisionInput,
@@ -57,16 +42,9 @@ const SubMissionDialog = ({
       submitProfileStatus: STATUS_EMPLOYEE.DA_NOP_LUU.CODE,
     };
     dispatch(updateEmployees(dataTemp, STATUS_OF_END_EMPLOYEE));
-    closeConfirmDialog();
     handleCloseRegisterDialog();
   };
 
-  const handleConfirmation = () => {
-    setOpenConfirmDialog(true);
-  };
-  const closeConfirmDialog = () => {
-    setOpenConfirmDialog(false);
-  };
   return (
     <div>
       <Dialog
@@ -75,9 +53,11 @@ const SubMissionDialog = ({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>Nộp lưu hồ sơ</DialogTitle>
-        <ValidatorForm onSubmit={handleConfirmation}>
-          <DialogContent className="no-scroll-dialog">
+        <DialogTitle>
+          <span className="styleColor">Nộp lưu hồ sơ</span>
+        </DialogTitle>
+        <ValidatorForm onSubmit={handleDecisionSubmit}>
+          <DialogContent className="no-scroll-dialog" dividers>
             <TextValidator
               className="mb-16 bold-value-textfield"
               label="Ngày nộp lưu"
@@ -91,7 +71,11 @@ const SubMissionDialog = ({
               InputLabelProps={{
                 shrink: true,
               }}
-              disabled
+              InputProps={{
+                inputProps: {
+                  min: moment().format("YYYY-MM-DD"),
+                },
+              }}
             />
             <TextValidator
               label="Mã nộp lưu"
@@ -101,11 +85,10 @@ const SubMissionDialog = ({
               fullWidth
               size="small"
               variant="outlined"
-              validators={["required", "matchDecisionCode"]}
-              errorMessages={[
-                "Mã nộp lưu không được bỏ trống",
-                "Mã nộp lưu không hợp lệ. Gợi ý: NL + Tháng hiện tại + Năm hiện tại + 3 số cuối Mã NV",
-              ]}
+              InputProps={{
+                readOnly: true,
+              }}
+              disabled
             />
           </DialogContent>
           <DialogActions className="mt-12">
@@ -127,14 +110,6 @@ const SubMissionDialog = ({
             </Button>
           </DialogActions>
         </ValidatorForm>
-        {openConfirmDialog && (
-          <ConfirmDialog
-            open={openConfirmDialog}
-            onClose={closeConfirmDialog}
-            handleDialogConfirm={handleDecisionSubmit}
-            title={title}
-          />
-        )}
       </Dialog>
     </div>
   );

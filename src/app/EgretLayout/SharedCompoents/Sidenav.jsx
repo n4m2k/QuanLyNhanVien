@@ -12,7 +12,6 @@ const ViewEgretVerticalNav = withTranslation()(EgretVerticalNav);
 function Sidenav(props) {
   const user = useSelector((state) => state.user);
   const role = user?.roles?.[0].id !== 4;
-  console.log(role);
   const updateSidebarMode = (sidebarSettings) => {
     let { settings, setLayoutSettings } = props;
     let activeLayoutSettingsName = settings.activeLayout + "Settings";

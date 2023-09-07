@@ -270,7 +270,7 @@ const InformationForm = ({ employeeDetail }) => {
                       </TableRow>
                     ))
                   ) : (
-                    <TableCell colSpan={5} align="center"></TableCell>
+                    <TableCell colSpan={6} align="center"></TableCell>
                   )}
                 </TableBody>
               </Table>

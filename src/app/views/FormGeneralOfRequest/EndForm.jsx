@@ -83,10 +83,10 @@ const EndForm = ({ endData, setEndData, statusOfForm }) => {
           </Grid>
         </Grid>
         <AddressNCurrent infoData={endData} />
-        <Grid container className="mb-10">
+        <Grid container>
           <Grid item xs={12}>
-            <div className="mb-10 mt-14">
-              <Typography className="font-style ">
+            <div className="mt-14">
+              <Typography className="font-style mt-4 ">
                 Tôi làm đơn này, kính xin Ban giám đốc cho tôi được thôi việc từ
                 ngày{" "}
                 <span className="input-endDay-dotted">
@@ -103,10 +103,10 @@ const EndForm = ({ endData, setEndData, statusOfForm }) => {
             </div>
           </Grid>
         </Grid>
-        <Grid container className="mb-10 ">
+        <Grid container>
           <Grid item xs={12}>
-            <div className=" mb-10 mt-14 ">
-              <Typography className="font-style">Lý Do:</Typography>
+            <div className=" mb-10">
+              <Typography className="font-style">Lý do:</Typography>
               <span>
                 <TextField
                   onChange={handleChange}
@@ -127,7 +127,7 @@ const EndForm = ({ endData, setEndData, statusOfForm }) => {
         <Grid container className="mb-10">
           <Grid item xs={12}>
             <div className="mb-10 mt-14">
-              <Typography className="font-style">
+              <Typography className="font-style mt-4">
                 Rất mong Ban giám đốc xem xét và chấp nhận cho tôi được phép
                 thôi việc. Tôi xin chân thành cảm ơn.
               </Typography>

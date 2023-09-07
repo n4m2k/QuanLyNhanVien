@@ -112,5 +112,9 @@ export const getListPendingSalaryIncreaseRequest = (payload) => {
     };
   };
 
-
+  export const clearListSalaryIncrease = () => {
+    return {
+      type: EC?.CLEAR_LIST_SALARY_INCREASE,
+    };
+  };
   

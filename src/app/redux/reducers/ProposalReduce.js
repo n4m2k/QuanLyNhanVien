@@ -52,6 +52,11 @@ const ProposalReducer = (state = initialState, action) => {
         error: action?.payload,
         loading: false,
       };
+      case EC.CLEAR_LIST_PROPOSAL:
+        return {
+          ...state,
+          listProposal: [],
+        };
     default:
       return state;
   }

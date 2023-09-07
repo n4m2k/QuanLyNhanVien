@@ -275,7 +275,7 @@ const FamilyRelationshipForm = ({
               fullWidth
               validators={[
                 "required",
-                'matchRegexp:^[^0-9!@#$%^&*(),.?":{}|<>]+$',
+                "noSpecialCharactersOrDigits",
                 "maxStringLength:30",
               ]}
               errorMessages={[
@@ -335,8 +335,11 @@ const FamilyRelationshipForm = ({
               value={familyFormData?.dateOfBirth || ""}
               onChange={handleChange}
               fullWidth
-              validators={["required"]}
-              errorMessages={["Vui lòng nhập ngày sinh"]}
+              validators={["required", "ageBelow100"]}
+              errorMessages={[
+                "Vui lòng nhập ngày sinh",
+                "Tuổi phải nhỏ hơn 100 tuổi",
+              ]}
               placeholder="Nhập ngày sinh"
               size="small"
               variant="outlined"
@@ -390,11 +393,15 @@ const FamilyRelationshipForm = ({
               value={familyFormData?.citizenIdentificationNumber || ""}
               onChange={handleChange}
               fullWidth
-              validators={["required", "isNumber", "matchRegexp:^\\d{12}$"]}
+              validators={[
+                "required",
+                "isNumber",
+                "citizenIdentificationNumberLength",
+              ]}
               errorMessages={[
                 "Vui lòng nhập căn cước công dân",
                 "Căn cước công dân phải là số",
-                "Căn cước công dân phải 12 số",
+                "Căn cước công dân phải là 9 số hoặc 12 số",
               ]}
               placeholder="Nhập CCCD"
               size="small"
@@ -416,11 +423,7 @@ const FamilyRelationshipForm = ({
               value={familyFormData?.phoneNumber || ""}
               onChange={handleChange}
               fullWidth
-              validators={[
-                "required",
-                "isNumber",
-                "matchRegexp:^([0]{1}[0-9]{9})?$",
-              ]}
+              validators={["required", "isNumber", "phoneNumber"]}
               errorMessages={[
                 "Vui lòng nhập số điện thoại",
                 "Số điện thoại phải là số",

@@ -9,7 +9,6 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 import "../../../styles/views/_informationForm.scss";
 import { useDispatch, useSelector } from "react-redux";
-import EmployeeDetailDialog from "../Pending/EmployeeDialog/EmployeeInfoDialog";
 import { getAllEmployeeRequest } from "../../redux/actions/EmployeeActions";
 import {
   STATUSES,
@@ -20,13 +19,13 @@ import moment from "moment/moment";
 import FolderSharedIcon from "@mui/icons-material/FolderShared";
 import RequestOfEmployeeDialog from "./RequestOfEmployee/RequestOfEmployeeDialog";
 import { getNameById } from "utils/handleGeneral";
-import { VIEW_ONLY } from "app/Constants/ListNameTab";
 import "../../../styles/views/_registerEmployee.scss";
 import "../../../styles/views/_style.scss";
 import SearchComponent from "../Component/SearchComponent/SearchComponent";
 import MaterialTableComponent from "../Component/MaterialTableComponent/MaterialTableComponent";
 import PaginationComponent from "../Component/PaginationComponent/PaginationComponent";
 import BreadcrumbComponent from "../Component/BreadcrumbComponent/BreadcrumbComponent";
+import RegisterEmployee from "../RegisterEmployees/RegisterEmployee";
 
 const PendingTable = () => {
   const [searchInputValue, setSearchInputValue] = useState("");
@@ -105,7 +104,7 @@ const PendingTable = () => {
       title: "Giới tính",
       field: "gender",
       align: "center",
-      width: "10px",
+      width: "2%",
       render: (data) => {
         return getNameById(data?.gender, GENDER);
       },
@@ -114,20 +113,20 @@ const PendingTable = () => {
       title: "Số Điện Thoại",
       field: "phone",
       align: "center",
-      width: "5%",
+      width: "3%",
     },
     {
       title: "Ngày sinh",
       field: "dateOfBirth",
       align: "center",
-      width: "5%",
+      width: "4%",
       render: (data) => moment(data?.dateOfBirth).format("DD/MM/YYYY"),
     },
     {
       title: "Nhóm",
       field: "team",
       align: "center",
-      width: "5%",
+      width: "3%",
       render: (data) => {
         return getNameById(data?.team, TEAM);
       },
@@ -136,7 +135,7 @@ const PendingTable = () => {
       title: "Địa chỉ",
       field: "address",
       align: "left",
-      width: "15%",
+      width: "20%",
       render: (data) => {
         return <span className="address-column">{data?.address}</span>;
       },
@@ -195,11 +194,11 @@ const PendingTable = () => {
           </Grid>
         </Grid>
         {openEmployeeDetailDialog && (
-          <EmployeeDetailDialog
+            <RegisterEmployee
             open={openEmployeeDetailDialog}
-            onClose={() => handleDialogClose()}
             employee={employeeData}
-            statusOfForm={VIEW_ONLY}
+            handleCloseRegisterDialog={handleDialogClose}
+            isViewMode={true}
           />
         )}
         {openRequestEmployeeDialog && (

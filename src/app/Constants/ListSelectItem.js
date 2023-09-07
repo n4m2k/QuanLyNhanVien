@@ -46,3 +46,9 @@ export const TOTAL_OBJECTS_KEY_EMPLOYEE = {
   KEY: 13,
   NAME: "TOTAL_OBJECTS_KEY",
 };
+
+export const ROW_PER_PAGE = {
+  KEY: 10,
+  NAME: "ROW_PER_PAGE",
+};
+

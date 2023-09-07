@@ -7,11 +7,10 @@ import {
   DialogActions,
   IconButton,
   makeStyles,
-  Paper,
 } from "@material-ui/core";
+import { useMediaQuery,Tab, Tabs  } from "@mui/material";
 import Box from "@mui/material/Box";
 import { Close as CloseIcon } from "@material-ui/icons";
-import { Tab, Tabs } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import ProfileForm from "./TabPanelForm/ProfileForm";
 import "../../../styles/views/_registerEmployee.scss";
@@ -19,12 +18,11 @@ import { ValidatorForm } from "react-material-ui-form-validator";
 import InformationForm from "./TabPanelForm/InformationForm";
 import CertificateForm from "./TabPanelForm/CertificateForm";
 import {
-  getEmployeeByIdRequest, updateEmployees,
+  getEmployeeByIdRequest,
+  updateEmployees,
 } from "app/redux/actions/EmployeeActions";
 import SubmitLeaderDialog from "./SubmitLeaderDialog";
-import {
-  STATUS_EMPLOYEE, STATUS_OF_EMPLOYEE,
-} from "app/Constants/ListStatus";
+import { STATUS_EMPLOYEE, STATUS_OF_EMPLOYEE } from "app/Constants/ListStatus";
 import SubMissionDialog from "./SubMissionDialog";
 import moment from "moment/moment";
 import { TAB_REGISTER } from "app/Constants/ListTab";
@@ -51,6 +49,7 @@ const RegisterEmployee = ({
   const submitRef = useRef();
   const classes = useStyles();
   const [value, setValue] = useState(0);
+  const isTablet = useMediaQuery("(max-width: 768px)");
   const [openSubmitLeaderDialog, setOpenSubmitLeaderDialog] = useState(false);
   const [openSubMissionDialog, setOpenSubMissionDialog] = useState(false);
   const dispatch = useDispatch();
@@ -94,7 +93,7 @@ const RegisterEmployee = ({
         maxWidth={"lg"}
         fullWidth={true}
       >
-        <DialogTitle id="form-dialog-title" className="custom-dialog-title">
+        <DialogTitle id="form-dialog-title">
           <div className="title-custom-tab">
             <span className="styleColor">Thông tin hồ sơ nhân viên</span>
             {employee?.numberSaved ? (
@@ -106,14 +105,14 @@ const RegisterEmployee = ({
               ""
             )}
           </div>
-          <IconButton aria-label="close" className={classes.iconClose}>
-            <CloseIcon color="error" onClick={handleCloseRegisterDialog} />
+          <IconButton aria-label="close" className={classes.iconClose} onClick={handleCloseRegisterDialog} >
+            <CloseIcon color="error" />
           </IconButton>
         </DialogTitle>
-        <Paper className="dialog-content-custom">
-          <Box sx={{ flexGrow: 1, display: "flex", height: 700 }}>
+        <DialogContent dividers className="dialog-content-custom">
+          <Box display={isTablet ? "" : "flex" } alignItems={isTablet ? "" : "stretch"} height={700}>
             <Tabs
-              orientation="vertical"
+              orientation={isTablet ? "horizontal" : "vertical"}
               variant="scrollable"
               value={value}
               onChange={handleChange}
@@ -122,11 +121,14 @@ const RegisterEmployee = ({
               className="custom-tab"
             >
               <Tab label={TAB_REGISTER.HO_SO.LABEL} className="tab-label" />
-              <Tab label={TAB_REGISTER.SO_YEU_LY_LICH.LABEL} className="tab-label" />
+              <Tab
+                label={TAB_REGISTER.SO_YEU_LY_LICH.LABEL}
+                className="tab-label"
+              />
               <Tab label={TAB_REGISTER.VAN_BANG.LABEL} className="tab-label" />
             </Tabs>
-            {value === TAB_REGISTER.HO_SO.KEY && (
-              <DialogContent dividers className="tab-content">
+            <div className="flex-container">
+              {value === TAB_REGISTER.HO_SO.KEY && (
                 <ValidatorForm>
                   <ProfileForm
                     employee={employee}
@@ -135,25 +137,23 @@ const RegisterEmployee = ({
                     isViewMode={isViewMode}
                   />
                 </ValidatorForm>
-              </DialogContent>
-            )}
-            {value === TAB_REGISTER.SO_YEU_LY_LICH.KEY && (
-              <DialogContent dividers className="tab-content">
+              )}
+              {value === TAB_REGISTER.SO_YEU_LY_LICH.KEY && (
                 <InformationForm employeeDetail={employeeDetail} />
-              </DialogContent>
-            )}
-            {value === TAB_REGISTER.VAN_BANG.KEY && (
-              <DialogContent dividers className="tab-content">
+              )}
+              {value === TAB_REGISTER.VAN_BANG.KEY && (
                 <CertificateForm employeeDetail={employeeDetail} />
-              </DialogContent>
-            )}
+              )}
+            </div>
           </Box>
-        </Paper>
+        </DialogContent>
+
         <DialogActions
           spacing={4}
           className="flex flex-end flex-middle button-center-register"
         >
-          {Number(employee?.submitProfileStatus) === STATUS_EMPLOYEE.DA_KET_THUC.CODE &&
+          {Number(employee?.submitProfileStatus) ===
+            STATUS_EMPLOYEE.DA_KET_THUC.CODE &&
             decision && (
               <Button
                 color="primary"
@@ -172,7 +172,7 @@ const RegisterEmployee = ({
           >
             Lưu
           </Button>
-          {(employee?.skill && employee?.activity) && (
+          {employee?.skill && employee?.activity && (
             <Button
               color="primary"
               variant="contained"

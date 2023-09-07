@@ -28,7 +28,7 @@ const InfoEmployee = ({ data}) => {
         </Grid>
             <Grid container className="mb-10 ">
           <Grid item xs={12}>
-            <div className=" mb-10 mt-14 ">
+            <div className=" mb-20 mt-14 ">
               <Typography className="font-style ">
                 Tôi tên là:{" "}
                 <span className="input-name-dotted">

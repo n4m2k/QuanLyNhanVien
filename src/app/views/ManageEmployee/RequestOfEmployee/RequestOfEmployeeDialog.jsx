@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -28,6 +28,7 @@ import { EDIT_END_EMPLOYEE, VIEW_ONLY } from "app/Constants/ListNameTab";
 import "../../../../styles/views/_style.scss";
 import { STATUS_EMPLOYEE } from "app/Constants/ListStatus";
 import { TAB_REQUEST } from "app/Constants/ListTab";
+import RegisterEmployee from "app/views/RegisterEmployees/RegisterEmployee";
 
 const useStyles = makeStyles({
   redColor: {
@@ -45,7 +46,9 @@ toast.configure({
 const RequestOfEmployeeDialog = ({ open, onClose, employee }) => {
   const [openEndEmployeeDialog, setOpenEndEmployeeDialog] = useState(false);
   const [statusOfForm, setStatusOfForm] = useState();
-  
+  const [openEmployeeDetailDialog, setOpenEmployeeDetailDialog] =
+    useState(false);
+  const [employeeData, setEmployeeData] = useState({});
   const styleClass = useStyles();
   const { t } = useTranslation();
 
@@ -64,19 +67,23 @@ const RequestOfEmployeeDialog = ({ open, onClose, employee }) => {
   };
   const handleEndEmployeeDialogClose = () => {
     setOpenEndEmployeeDialog(false);
-   
+    setOpenEmployeeDetailDialog(false);
   };
-  const viewEndEmployeeDialogOpen = () =>{
-    setOpenEndEmployeeDialog(true)
+  const viewEndEmployeeDialogOpen = () => {
+    setOpenEndEmployeeDialog(true);
     setStatusOfForm(VIEW_ONLY);
-  }
+  };
+  const showEmployeeData = (employee) => {
+    setEmployeeData(employee);
+    setOpenEmployeeDetailDialog(true);
+  };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth={true}>
       <DialogTitle id="draggable-dialog-title">
         <span className="styleColor">Yêu cầu của nhân viên </span>
-        <IconButton aria-label="close" className={styleClass?.iconClose}>
-          <CloseIcon color="error" onClick={handleClose} />
+        <IconButton aria-label="close" className={styleClass?.iconClose} onClick={handleClose}>
+          <CloseIcon color="error"  />
         </IconButton>
       </DialogTitle>
       <Paper>
@@ -146,7 +153,18 @@ const RequestOfEmployeeDialog = ({ open, onClose, employee }) => {
 
       <DialogActions className="mt-12 ">
         <Grid container className="button-center">
-          {Number(employee?.submitProfileStatus) !== STATUS_EMPLOYEE.CHO_DUYET_KET_THUC.CODE ? (
+          <Button
+            className=" mr-12 "
+            color="primary"
+            variant="contained"
+            onClick={() => {
+              showEmployeeData(employee);
+            }}
+          >
+            Xem hồ sơ
+          </Button>
+          {Number(employee?.submitProfileStatus) !==
+          STATUS_EMPLOYEE.CHO_DUYET_KET_THUC.CODE ? (
             <Button
               className=" mr-12 buttonColorRed"
               color="error"
@@ -182,6 +200,14 @@ const RequestOfEmployeeDialog = ({ open, onClose, employee }) => {
           onClose={() => handleEndEmployeeDialogClose()}
           requestOfEmployeeData={employee}
           closeFormRequest={onClose}
+        />
+      )}
+      {openEmployeeDetailDialog && (
+        <RegisterEmployee
+          open={openEmployeeDetailDialog}
+          employee={employeeData}
+          handleCloseRegisterDialog={handleEndEmployeeDialogClose}
+          isViewMode={true}
         />
       )}
     </Dialog>

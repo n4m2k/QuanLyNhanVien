@@ -70,13 +70,7 @@ const ProcessTable = ({ title }) => {
       },
     },
     {
-      title: "Mã phiếu  ",
-      field: "id",
-      align: "center",
-      width: "5%",
-    },
-    {
-      title: "Lần",
+      title: "Số Lần nộp",
       field: "times",
       align: "center",
       width: "5%",
@@ -90,6 +84,13 @@ const ProcessTable = ({ title }) => {
       render: (data)=>{
         return (getNameById(Number(data?.currentPosition), LIST_POSITION))
       }
+    },
+    {
+      title: "Ghi chú",
+      field: "note",
+      align: "left",
+      width: "10%",
+      render: (data) => <span className="max-width-column-note">{data?.note}</span>,
     },
     {
       title: "Vị trí mới",
@@ -131,8 +132,7 @@ const ProcessTable = ({ title }) => {
   return (
     <div>
       <Grid className={styleClass?.inputSearch}>
-        <h4 className="mt-16 mb-16"> {"Danh sách " + title} </h4>
-
+        <h4 className="mt-16 mb-16 height-title"> </h4>
       </Grid>
       <Grid container spacing={3}>
         <Grid item lg={12} md={12} sm={12} xs={12}>

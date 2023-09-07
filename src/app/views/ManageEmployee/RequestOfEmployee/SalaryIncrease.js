@@ -16,6 +16,7 @@ import {
   createSalaryIncreaseRequest,
   deleteSalaryIncreaseRequest,
   updateSalaryIncreaseRequest,
+  clearListSalaryIncrease,
 } from "app/redux/actions/SalaryIncreaseAction";
 import {
   formatCurrency,
@@ -37,7 +38,6 @@ const SalaryIncrease = ({ employee }) => {
   const [dataSalaryIncrease, setDataSalaryIncrease] = useState({});
   const [titleOfForm, setTitleOfForm] = useState("Thêm mới đơn");
   const [statusOfForm, setStatusOfForm] = useState("");
-
   const [openGeneralOfRequestForm, setOpenGeneralOfRequestForm] =
     useState(false);
   const [salaryIncreaseDetail, setSalaryIncreaseDetail] = useState({});
@@ -51,6 +51,7 @@ const SalaryIncrease = ({ employee }) => {
 
 
   useEffect(() => {
+    dispatch(clearListSalaryIncrease());
     dispatch(getAllLeadersRequest());
     dispatch(getListSalaryIncreaseByEmployeeIdRequest(employee?.id));
   
@@ -66,35 +67,7 @@ const SalaryIncrease = ({ employee }) => {
     };
   }, [dataSalaryIncrease.oldSalary, dataSalaryIncrease.newSalary]);
 
- 
- 
   const title = "Chắc chắn xóa";
-
-  const handleChange = (e) => {
-    setDataSalaryIncrease({
-      ...dataSalaryIncrease,
-      [e.target.name]: removeMultipleSpaces(e.target.value),
-    });
-  };
-
-  const handleSubmit = () => {
-    if (dataSalaryIncrease?.id) {
-      const dataTemp = {
-        ...dataSalaryIncrease,
-      };
-      dispatch(updateSalaryIncreaseRequest(dataTemp, employee?.id));
-      handleReset();
-    } else {
-      dispatch(createSalaryIncreaseRequest([dataSalaryIncrease], employee?.id));
-      handleReset();
-    }
-  };
-
-  const handleReset = () => {
-    setDataSalaryIncrease({});
-    setTitleOfForm("Thêm mới đơn");
-    formRef.current.resetValidations();
-  };
 
   const columns = [
     {
@@ -139,13 +112,6 @@ const SalaryIncrease = ({ employee }) => {
         );
       },
     },
-
-    {
-      title: "Mã đơn",
-      field: "id",
-      align: "center",
-      width: "2%",
-    },
     {
       title: "Lương cũ",
       field: "oldSalary",
@@ -184,6 +150,33 @@ const SalaryIncrease = ({ employee }) => {
       },
     },
   ];
+  
+  const handleChange = (e) => {
+    setDataSalaryIncrease({
+      ...dataSalaryIncrease,
+      [e.target.name]: removeMultipleSpaces(e.target.value),
+    });
+  };
+
+  const handleSubmit = () => {
+    if (dataSalaryIncrease?.id) {
+      const dataTemp = {
+        ...dataSalaryIncrease,
+      };
+      dispatch(updateSalaryIncreaseRequest(dataTemp, employee?.id));
+      handleReset();
+    } else {
+      dispatch(createSalaryIncreaseRequest([dataSalaryIncrease], employee?.id));
+      handleReset();
+    }
+  };
+
+  const handleReset = () => {
+    setDataSalaryIncrease({});
+    setTitleOfForm("Thêm mới đơn");
+    formRef.current.resetValidations();
+  };
+
   const handleOpenFormDetail = (data) => {
      setOpenGeneralOfRequestForm(true);
     if (statusesForView.includes(Number(data?.salaryIncreaseStatus))) {
@@ -195,6 +188,7 @@ const SalaryIncrease = ({ employee }) => {
   };
 
   const closeFormDetail = () => {
+    
     setOpenGeneralOfRequestForm(false);
   };
 
@@ -274,10 +268,11 @@ const SalaryIncrease = ({ employee }) => {
                 value={dataSalaryIncrease?.oldSalary || ""}
                 onChange={handleChange}
                 fullWidth
-                validators={["required", "maxNumber:999999999"]}
+                validators={["required", "maxNumber:999999999" , "validSalary"]}
                 errorMessages={[
                   "Vui lòng nhập Lương cũ",
                   "Lương không được quá 9 ký tự",
+                  "Lương phải lớn hơn 1000000 và có đuôi 000"
                 ]}
                 placeholder="Nhập Lương cũ"
                 size="small"
@@ -301,11 +296,12 @@ const SalaryIncrease = ({ employee }) => {
                 value={dataSalaryIncrease?.newSalary || ""}
                 onChange={handleChange}
                 fullWidth
-                validators={["maxNumber:999999999", "required", "isGreater"]}
+                validators={["maxNumber:999999999", "required", "isGreater",  "validSalary"]}
                 errorMessages={[
                   "Lương không được quá 9 ký tự",
                   "Vui lòng nhập Lương mới",
                   "lương mới phải lớn hơn lương cũ",
+                  "Lương phải lớn hơn 1000000 và có đuôi 000"
                 ]}
                 placeholder="Nhập Lương mới"
                 size="small"
@@ -348,7 +344,6 @@ const SalaryIncrease = ({ employee }) => {
                 name="note"
                 label={
                   <span>
-                    <span className="red-color"> * </span>
                     Ghi chú
                   </span>
                 }
@@ -356,9 +351,8 @@ const SalaryIncrease = ({ employee }) => {
                 onChange={handleChange}
                 fullWidth
                 multiline
-                validators={["required", "maxStringLength:500"]}
+                validators={[ "maxStringLength:500"]}
                 errorMessages={[
-                  "Vui lòng nhập Ghi chú",
                   "Nhập tối đa 500 ký tự",
                 ]}
                 placeholder="Nhập Ghi chú"

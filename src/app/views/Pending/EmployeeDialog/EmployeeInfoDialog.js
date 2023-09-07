@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
 import { ValidatorForm } from "react-material-ui-form-validator";
-import { Tab, Tabs } from "@mui/material";
+import { Tab, Tabs,useMediaQuery } from "@mui/material";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useTranslation } from "react-i18next";
@@ -26,6 +26,7 @@ import ProfileForm from "app/views/RegisterEmployees/TabPanelForm/ProfileForm";
 import InformationForm from "app/views/RegisterEmployees/TabPanelForm/InformationForm";
 import CertificateForm from "app/views/RegisterEmployees/TabPanelForm/CertificateForm";
 import { VIEW_ONLY } from "../../../Constants/ListNameTab";
+import { TAB_REGISTER } from "app/Constants/ListTab";
 const useStyles = makeStyles({
   redColor: {
     color: "red",
@@ -49,6 +50,7 @@ const EmployeeDetailDialog = ({
   const [openApproveDialog, setOpenApproveDialog] = useState(false);
   const [openAdditionalDialog, setOpenAdditionalDialog] = useState(false);
   const [openRefuseDialog, setOpenRefuseDialog] = useState(false);
+  const isTablet = useMediaQuery("(max-width: 768px)");
   const styleClass = useStyles();
   const { t } = useTranslation();
   const [value, setValue] = useState(0);
@@ -90,47 +92,47 @@ const EmployeeDetailDialog = ({
     <Dialog open={open} onClose={handleClose} maxWidth="lg"  fullWidth={true}>
       <DialogTitle id="draggable-dialog-title">
         <span className="styleColor">Thông tin nhân viên</span>
-        <IconButton aria-label="close" className={styleClass?.iconClose}>
-          <CloseIcon color="error" onClick={handleClose} />
+        <IconButton aria-label="close" className={styleClass?.iconClose} onClick={handleClose}>
+          <CloseIcon color="error" />
         </IconButton>
       </DialogTitle>
       <DialogContent dividers className="dialog-content-custom">
-        <Box sx={{ flexGrow: 1, display: "flex", height: 699 }}>
-          <Tabs
-            orientation="vertical"
-            variant="scrollable"
-            value={value}
-            onChange={handleChange}
-            aria-label="Vertical tabs example"
-            className="custom-tab"
-          >
-            <Tab label="CV" />
-            <Tab label="Sơ yếu lý lịch" />
-            <Tab label="Văn bằng" />
-          </Tabs>
-          {value === 0 && (
-            <DialogContent dividers className="tab-content">
-              <ValidatorForm>
-                <ProfileForm
-                  employee={employeeDetail}
-                  setEmployee={setEmployee}
-                  isViewMode={true}
-                />
-              </ValidatorForm>
-            </DialogContent>
-          )}
-          {value === 1 && (
-            <DialogContent dividers className="tab-content">
-              <InformationForm employeeDetail={employeeDetail} />
-            </DialogContent>
-          )}
-          {value === 2 && (
-            <DialogContent dividers className="tab-content">
-              <CertificateForm employeeDetail={employeeDetail} />
-            </DialogContent>
-          )}
-        </Box>
-      </DialogContent>
+          <Box display={isTablet ? "" : "flex" } alignItems={isTablet ? "" : "stretch"} height={700}>
+            <Tabs
+              orientation={isTablet ? "horizontal" : "vertical"}
+              variant="scrollable"
+              value={value}
+              onChange={handleChange}
+              aria-label="Vertical tabs example"
+              sx={{ borderRight: 1, borderColor: "divider" }}
+              className="custom-tab"
+            >
+              <Tab label={TAB_REGISTER.HO_SO.LABEL} className="tab-label" />
+              <Tab
+                label={TAB_REGISTER.SO_YEU_LY_LICH.LABEL}
+                className="tab-label"
+              />
+              <Tab label={TAB_REGISTER.VAN_BANG.LABEL} className="tab-label" />
+            </Tabs>
+            <div className="flex-container">
+              {value === TAB_REGISTER.HO_SO.KEY && (
+                <ValidatorForm>
+                  <ProfileForm
+                   employee={employeeDetail}
+                   setEmployee={setEmployee}
+                   isViewMode={true}
+                  />
+                </ValidatorForm>
+              )}
+              {value === TAB_REGISTER.SO_YEU_LY_LICH.KEY && (
+                <InformationForm employeeDetail={employeeDetail} />
+              )}
+              {value === TAB_REGISTER.VAN_BANG.KEY && (
+                <CertificateForm employeeDetail={employeeDetail} />
+              )}
+            </div>
+          </Box>
+        </DialogContent>
       <DialogActions className="mt-12 button-center">
         {statusOfForm === VIEW_ONLY ? null : (
           <div>

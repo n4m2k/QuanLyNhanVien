@@ -52,7 +52,11 @@ const ProcessReducer = (state = initialState, action) => {
         error: action?.payload,
         loading: false,
       };
-
+    case EC.CLEAR_LIST_PROCESS:
+        return {
+          ...state,
+          listProcess: [],
+        };
     default:
       return state;
   }

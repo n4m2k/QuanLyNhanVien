@@ -32,37 +32,47 @@ import { STATUS_OF_EMPLOYEE } from "app/Constants/ListStatus";
 
 // Get all
 function* getAllEmployeesSaga(action) {
-  const response = yield call(
-    searchEmployees,
-    action?.payload?.status,
-    action?.payload?.page,
-    action?.payload?.rowPerPage,
-    action?.payload?.keyword
-  );
-  if (response?.data?.code === 200) {
-    yield put(getAllEmployeeSuccess(response?.data));
-  } else {
-    yield put(getAllEmployeeFail(response?.message));
-    toast.error("Lỗi khi lấy dữ liệu");
+  try {
+    const response = yield call(
+      searchEmployees,
+      action?.payload?.status,
+      action?.payload?.page,
+      action?.payload?.rowPerPage,
+      action?.payload?.keyword
+    );
+    if (response?.data?.code === 200) {
+      yield put(getAllEmployeeSuccess(response?.data));
+    } else {
+      yield put(getAllEmployeeFail(response?.message));
+      toast.error("Lỗi khi lấy dữ liệu");
+    }
+  } catch (error) {
+    yield put(getAllEmployeeFail("Có lỗi xảy ra khi gọi API"));
+    toast.error("Có lỗi xảy ra khi gọi API");
   }
 }
 // Thêm
 function* addEmployeesSaga(action) {
-  const response = yield call(addEmployees, action.payload);
-  if (response?.code === 200) {
-    yield put(addEmployeesSuccess(response?.data));
-    toast.success("Thêm nhân viên thành công!");
-    yield put(
-      getAllEmployeeRequest({
-        status: STATUS_OF_EMPLOYEE,
-        page: 1,
-        rowPerPage: 10,
-        keyword: "",
-      })
-    );
-  } else {
-    yield put(addEmployeesFail(response?.message));
-    toast.error(response?.message);
+  try {
+    const response = yield call(addEmployees, action.payload);
+    if (response?.code === 200) {
+      yield put(addEmployeesSuccess(response?.data));
+      toast.success("Thêm nhân viên thành công!");
+      yield put(
+        getAllEmployeeRequest({
+          status: STATUS_OF_EMPLOYEE,
+          page: 1,
+          rowPerPage: 10,
+          keyword: "",
+        })
+      );
+    } else {
+      yield put(addEmployeesFail(response?.message));
+      toast.error(response?.message);
+    }
+  } catch (error) {
+    yield put(addEmployeesFail("Có lỗi xảy ra khi gọi API"));
+    toast.error("Có lỗi xảy ra khi gọi API");
   }
 }
 // Xóa
@@ -86,31 +96,41 @@ function* deleteEmployeeSaga(action) {
 }
 // Get by id
 function* getEmployeeDetailSaga(action) {
-  const response = yield call(getEmployeeById, action.payload);
-  if (response?.code === 200) {
-    yield put(getEmployeeByIdSuccess(response?.data));
-  } else {
-    yield put(getEmployeeByIdFail(response?.message));
+  try {
+    const response = yield call(getEmployeeById, action.payload);
+    if (response?.code === 200) {
+      yield put(getEmployeeByIdSuccess(response?.data));
+    } else {
+      yield put(getEmployeeByIdFail(response?.message));
+    }
+  } catch (error) {
+    yield put(getEmployeeByIdFail("Có lỗi xảy ra khi gọi API"));
+    toast.error("Có lỗi xảy ra khi gọi API");
   }
 }
 
 // Sửa
 function* updateEmployeeSaga(action) {
-  const response = yield call(updateEmployee, action.payload);
-  if (response?.code === 200) {
-    yield put(updateEmployeesSuccess(response?.data));
-    toast.success("Cập nhật thành công");
-    yield put(
-      getAllEmployeeRequest({
-        status: action.status,
-        page: 1,
-        rowPerPage: 10,
-        keyword: "",
-      })
-    );
-  } else {
-    yield put(updateEmployeesFail(response?.message));
-    toast.error("Sửa không thành công!");
+  try {
+    const response = yield call(updateEmployee, action.payload);
+    if (response?.code === 200) {
+      yield put(updateEmployeesSuccess(response?.data));
+      toast.success("Cập nhật thành công");
+      yield put(
+        getAllEmployeeRequest({
+          status: action.status,
+          page: 1,
+          rowPerPage: 10,
+          keyword: "",
+        })
+      );
+    } else {
+      yield put(updateEmployeesFail(response?.message));
+      toast.error("Sửa không thành công!");
+    }
+  } catch (error) {
+    yield put(updateEmployeesFail("Có lỗi xảy ra khi gọi API"));
+    toast.error("Có lỗi xảy ra khi gọi API");
   }
 }
 export default function* employeesSaga() {

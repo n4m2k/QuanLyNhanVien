@@ -38,7 +38,7 @@
   height: 200px;
 }
 
-.address-column {
+.address-column, .max-width-column, .max-width-column-note {
   display: inline-block;
   max-width: 200px;
   white-space: nowrap;
@@ -46,6 +46,13 @@
   text-overflow: ellipsis;
   margin-top: 5px;
 }
+.max-width-column {
+  max-width: 350px;
+}
+.max-width-column-note{
+  max-width: 560px;
+}
+
 .no-scroll-dialog {
   max-width: 100%;
   overflow: hidden;
@@ -89,4 +96,16 @@
   & .MuiTabs-indicator {
     background-color: #7467ef !important;
   }
+}
+
+.height-title{
+  height: 45px;
+}
+
+@media screen and (max-width: 768px) {
+
+  
+.address-column, .max-width-column, .max-width-column-note {
+  max-width: 100px;
+}
 }

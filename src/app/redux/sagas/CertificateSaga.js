@@ -58,7 +58,6 @@ function* addCertificateSaga(action) {
       toast.error(response?.message);
     }
   } catch (error) {
-    // Xử lý lỗi nếu có
     yield put(addCertificateFail("Có lỗi xảy ra khi gọi API"));
     toast.error("Có lỗi xảy ra khi gọi API");
   }

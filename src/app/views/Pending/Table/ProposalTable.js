@@ -69,24 +69,18 @@ const ProposalTable = ({ title }) => {
       },
     },
     {
-      title: "Mã phiếu",
-      field: "id",
-      align: "center",
-      width: "5%",
-    },
-    {
       title: "Nội dung",
       field: "content",
       align: "left",
       width: "5%",
-      render: (data) => <span className="address-column">{data?.content}</span>,
+      render: (data) => <span className="max-width-column-note">{data?.content}</span>,
     },
     {
       title: "Miêu tả cụ thể",
       field: "detailedDescription",
       align: "left",
       width: "5%",
-      render: (data) => <span className="address-column">{data?.detailedDescription}</span>,
+      render: (data) => <span className="max-width-column-note">{data?.detailedDescription}</span>,
     },
     {
       title: "Ngày đề xuất",
@@ -116,7 +110,7 @@ const ProposalTable = ({ title }) => {
   return (
     <div>
       <Grid className={styleClass?.inputSearch}>
-        <h4 className="mt-16 mb-16"> {"Danh sách " + title} </h4>
+        <h4 className="mt-16 mb-16 height-title"> </h4>
       </Grid>
       <Grid container spacing={3}>
         <Grid item lg={12} md={12} sm={12} xs={12}>

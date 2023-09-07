@@ -94,7 +94,7 @@
   
     .input-date-dotted {
       input {
-        width: 30.1%;
+        width: 30%;
       }
     }
   
@@ -223,5 +223,40 @@
   
     .span-footer {
       margin-top: 60px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    .paper {
+      .background {
+        padding: 4% 5%; /* Adjust padding for smaller screens */
+      }
+  
+  
+      .input-date-dotted input{
+        width: 83.1%;
+      }
+      .input-name-dotted input {
+        width: 84.2%;
+      }
+      .input-team-dotted input {
+        width: 75.6%; 
+      }
+      
+      .input-endDay-dotted input {
+        width: 40%; 
+      }
+      .input-leaderName-dotted input {
+        width: 100%; 
+      }
+      .input-current-dotted input {
+        width: 86.2%;
+      }
+      .input-address-dotted input{
+        width: 100%;
+      }
+      .span-footer {
+        margin-top: 30px; 
+      }
     }
   }

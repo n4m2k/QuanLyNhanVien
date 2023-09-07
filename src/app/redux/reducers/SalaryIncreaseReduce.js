@@ -48,6 +48,11 @@ const SalaryIncreaseReducer = (state = initialState, action) => {
         error: action?.employeeId,
         loading: false,
       };
+      case EC.CLEAR_LIST_SALARY_INCREASE:
+        return {
+          ...state,
+          listSalaryIncrease: [],
+        };
     default:
       return state;
   }

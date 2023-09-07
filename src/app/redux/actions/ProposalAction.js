@@ -112,4 +112,8 @@ export const getListPendingProposalRequest = (payload) => {
     };
   };
 
-  
+  export const clearListProposal = () => {
+    return {
+      type: EC?.CLEAR_LIST_PROPOSAL,
+    };
+  };

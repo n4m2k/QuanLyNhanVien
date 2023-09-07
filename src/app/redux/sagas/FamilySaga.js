@@ -58,7 +58,6 @@ function* addFamilySaga(action) {
       toast.error(response?.message);
     }
   } catch (error) {
-    // Xử lý lỗi nếu có
     yield put(addFamilyFail("Có lỗi xảy ra khi gọi API"));
     toast.error("Có lỗi xảy ra khi gọi API");
   }
@@ -76,7 +75,6 @@ function* updateFamilySaga(action) {
       toast.error(response?.message);
     }
   } catch (error) {
-    // Xử lý lỗi nếu có
     yield put(updateFamilyFail("Có lỗi xảy ra khi gọi API"));
     toast.error("Có lỗi xảy ra khi gọi API");
   }

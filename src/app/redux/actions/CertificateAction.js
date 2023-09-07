@@ -8,6 +8,7 @@ import {
   DELETE_CERTIFICATE_FAIL,
   DELETE_CERTIFICATE_REQUEST,
   DELETE_CERTIFICATE_SUCCESS,
+  RESET_CERTIFICATE,
   UPDATE_CERTIFICATE_FAIL,
   UPDATE_CERTIFICATE_REQUEST,
   UPDATE_CERTIFICATE_SUCCESS,
@@ -62,4 +63,10 @@ export const deleteCertificateSuccess = (payload) => {
 
 export const deleteCertificateFail = (error) => {
   return { type: DELETE_CERTIFICATE_FAIL, payload: error };
+};
+
+export const resetCertificate = () => {
+  return {
+    type: RESET_CERTIFICATE,
+  };
 };

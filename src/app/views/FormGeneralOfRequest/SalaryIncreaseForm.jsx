@@ -52,8 +52,8 @@ const SalaryIncreaseForm = ({ salaryIncreaseData, statusOfForm , setSalaryIncrea
         </Grid>
         <Grid container className="mb-10 ">
           <Grid item xs={12}>
-            <div className=" mb-10 mt-14 ">
-              <Typography className="font-style ">Lý Do:</Typography>
+            <div className=" mt-14 ">
+              <Typography className="font-style ">Lý do:</Typography>
               <span>
                   <TextField
                   type="text"
@@ -71,7 +71,7 @@ const SalaryIncreaseForm = ({ salaryIncreaseData, statusOfForm , setSalaryIncrea
         </Grid>
         <Grid container className="mb-10">
           <Grid item xs={12}>
-            <div className="mb-10 mt-14">
+            <div className="mt-14">
               <Typography className="font-style">
                 Như vậy, việc tăng lương cho tôi là cần thiết để phù hợp với
                 chất lượng làm việc của tôi trong thời gian qua.

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { Icon, IconButton, Avatar } from "@material-ui/core";
 import moment from "moment/moment";
@@ -13,8 +12,7 @@ import PaginationComponent from "../PaginationComponent/PaginationComponent";
 import BreadcrumbComponent from "../BreadcrumbComponent/BreadcrumbComponent";
 import SearchComponent from "../SearchComponent/SearchComponent";
 
-const GeneralComponent = ({ status, decision }) => {
-  const { t } = useTranslation();
+const GeneralComponent = ({ status, decision, manage, title }) => {
   const [keywords, setKeywords] = useState("");
   const [page, setPage] = useState(0);
   const [rowPerPage, setRowPerPage] = useState(10);
@@ -132,8 +130,8 @@ const GeneralComponent = ({ status, decision }) => {
   return (
     <div className="m-sm-30">
       <BreadcrumbComponent
-        manage={t("Dashboard.manage")}
-        title={t("staff.title")}
+        manage={manage}
+        title={title}
       />
       <SearchComponent keywords={keywords} setKeywords={setKeywords} />
       <MaterialTableComponent

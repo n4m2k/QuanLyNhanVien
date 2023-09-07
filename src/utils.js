@@ -2,11 +2,11 @@ import moment from "moment";
 
 export function debounce(func, wait, immediate) {
   let timeout;
-  return function() {
+  return function () {
     let context = this,
       args = arguments;
     clearTimeout(timeout);
-    timeout = setTimeout(function() {
+    timeout = setTimeout(function () {
       timeout = null;
       if (!immediate) func.apply(context, args);
     }, wait);
@@ -72,7 +72,7 @@ export function scrollTo(scrollableElement, elmID) {
   if (stopY > startY) {
     for (let i = startY; i < stopY; i += step) {
       setTimeout(
-        (function(leapY) {
+        (function (leapY) {
           return () => {
             scrollableElement.scrollTo(0, leapY);
           };
@@ -87,7 +87,7 @@ export function scrollTo(scrollableElement, elmID) {
   }
   for (let i = startY; i > stopY; i -= step) {
     setTimeout(
-      (function(leapY) {
+      (function (leapY) {
         return () => {
           scrollableElement.scrollTo(0, leapY);
         };
@@ -123,7 +123,7 @@ export function getQueryParam(prop) {
     window.location.href.slice(window.location.href.indexOf("?") + 1)
   );
   let definitions = search.split("&");
-  definitions.forEach(function(val, key) {
+  definitions.forEach(function (val, key) {
     let parts = val.split("=", 2);
     params[parts[0]] = parts[1];
   });
@@ -132,8 +132,8 @@ export function getQueryParam(prop) {
 
 export function classList(classes) {
   return Object.entries(classes)
-    .filter(entry => entry[1])
-    .map(entry => entry[0])
+    .filter((entry) => entry[1])
+    .map((entry) => entry[0])
     .join(" ");
 }
 export function isBase64Image(str) {
@@ -150,4 +150,18 @@ export function countObjectKeys(obj, excludedKeys) {
     }
   }
   return count;
+}
+export function validateImage(file) {
+  const maxSizeImg = 2 * 1024 * 1024;
+  const allowedFormats = ["image/jpeg", "image/png"];
+
+  if (file.size > maxSizeImg) {
+    return "Ảnh quá lớn. Vui lòng chọn ảnh có kích thước nhỏ hơn 2MB.";
+  }
+
+  if (!allowedFormats.includes(file.type)) {
+    return "Định dạng ảnh không được chấp nhận. Vui lòng chọn định dạng JPEG hoặc PNG.";
+  }
+
+  return null; 
 }

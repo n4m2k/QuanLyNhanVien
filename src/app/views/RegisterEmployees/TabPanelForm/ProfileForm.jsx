@@ -1,11 +1,6 @@
 import React from "react";
-import { Typography, Paper, Grid, Avatar, Button } from "@material-ui/core";
+import { Avatar, Button } from "@material-ui/core";
 import { ValidatorForm, TextValidator } from "react-material-ui-form-validator";
-import MailOutlineIcon from "@material-ui/icons/MailOutline";
-import LocalPhoneOutlinedIcon from "@material-ui/icons/LocalPhoneOutlined";
-import HomeOutlinedIcon from "@material-ui/icons/HomeOutlined";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import CalendarTodayOutlinedIcon from "@material-ui/icons/CalendarTodayOutlined";
 import "../../../../styles/views/_profileForm.scss";
 import ExperiencesComponent from "./ExperiencesForm/ExperiencesComponent";
 import { GENDER, TEAM } from "app/Constants/ListSelectItem";
@@ -33,126 +28,217 @@ const ProfileForm = ({ employee, setEmployee, submitRef, isViewMode }) => {
     dispatch(updateEmployees(dataTemp, STATUS_OF_EMPLOYEE));
   };
   return (
-    <Paper className="root-profile">
-      <Grid container className="background-profile">
-        <Grid item container xs={4} direction="column" spacing={3}>
-          <Avatar className="avatar" alt="Your Name" src={employee?.image} />
-          <Grid item className="mt-32 mb-8">
-            <div className="contact-item">
-              <MailOutlineIcon />
-              <span>{employee?.email}</span>
-            </div>
-            <div className="contact-item">
-              <LocalPhoneOutlinedIcon />
-              <span>{employee?.phone}</span>
-            </div>
-            <div className="contact-item">
-              <HomeOutlinedIcon />
-              <span>{employee?.address}</span>
-            </div>
-            <div className="contact-item">
-              <PersonOutlineOutlinedIcon />
-              <span>
-                {
-                  GENDER?.find(
-                    (item) => item?.id === employee?.gender?.toString()
-                  )?.name
-                }
-              </span>
-            </div>
-            <div className="contact-item">
-              <CalendarTodayOutlinedIcon />
-              <span>{moment(employee?.dateOfBirth).format("DD/MM/YYYY")}</span>
-            </div>
-          </Grid>
-          <Grid item className="mt-32">
-            <ValidatorForm onSubmit={handleSubmit}>
-              <Grid item>
-                <h3 className="font-weight-bold custom-font mt-c">KỸ NĂNG</h3>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <TextValidator
-                    onChange={handleInputChange}
-                    name="skill"
-                    value={employee?.skill || ""}
-                    fullWidth
-                    validators={["required"]}
-                    errorMessages={["Vui lòng nhập kỹ năng"]}
-                    size="small"
-                    multiline
-                    InputProps={{
-                      readOnly: isViewMode,
-                    }}
-                    className="textarea-dotted"
-                  />
-                </Grid>
-              </Grid>
-              <Grid item>
-                <h3 className="font-weight-bold  custom-font">HOẠT ĐỘNG</h3>
-                <Grid item lg={12} md={12} sm={12} xs={12}>
-                  <TextValidator
-                    onChange={handleInputChange}
-                    name="activity"
-                    value={employee?.activity || ""}
-                    fullWidth
-                    validators={["required"]}
-                    errorMessages={["Vui lòng nhập hoạt động"]}
-                    size="small"
-                    multiline
-                    InputProps={{
-                      readOnly: isViewMode,
-                    }}
-                    className="textarea-dotted"
-                  />
-                </Grid>
-              </Grid>
-              <Button
-                variant="contained"
-                className="primary"
-                type="submit"
-                ref={submitRef}
-                style={{ display: "none" }}
-              >
-                Lưu
-              </Button>
-            </ValidatorForm>
-          </Grid>
-        </Grid>
-        <Grid item container xs={8} direction="column" spacing={3}>
-          <Grid item className="leftColumn ml-32">
-            <div>
-              <Typography variant="h4" className="name">
-                {employee?.name}
-              </Typography>
-              <Typography variant="subtitle1" className="position">
-                {TEAM.find((item) => item.id === employee?.team)?.name}
-              </Typography>
-            </div>
-          </Grid>
-          <Grid item className="leftColumn ml-32 mt-16 mb-16">
-            <h3 className="font-weight-bold my-auto custom-font">MỤC TIÊU</h3>
-            <div className="jobObjective">
-              <TextValidator
-                id="standard-basic"
-                fullWidth
-                value={employee?.knowledge || ""}
-                type="text"
-                name="knowledge"
-                multiline
-                className="knowledge-input"
-                onChange={handleInputChange}
-                placeholder={isViewMode ? "Không có mục tiêu!" : "Nhập mục tiêu của bạn..."}
-                InputProps={{
-                  readOnly: isViewMode,
-                }}
+    <div className="root-profile">
+      <div className="background-profile">
+        <div className="cvp-content three cv-wrap">
+          <div className="box-top">
+            <div className="box-img">
+              <Avatar
+                className="cv-photo"
+                alt="Your Name"
+                src={employee?.image}
               />
             </div>
-          </Grid>
-          <Grid item className="leftColumn ml-32">
-            <ExperiencesComponent employee={employee} isViewMode={isViewMode} />
-          </Grid>
-        </Grid>
-      </Grid>
-    </Paper>
+            <div className="box-name">
+              <div className="box-name-contain">
+                <div className="">
+                  <h3 className="name-custom">{employee?.name}</h3>
+                </div>
+                <div className="box-cv-name">
+                  <h4 className="name-cv">
+                    {" "}
+                    {TEAM.find((item) => item.id === employee?.team)?.name}
+                  </h4>
+                </div>
+              </div>
+              <div className="box-info">
+                <div className="cvp-box-child-list">
+                  <div className="content-info">
+                    <div>
+                      <div className="change-font-size custom-icon">
+                        <i
+                          class="fa fa-venus-mars icn-mars"
+                          aria-hidden="true"
+                        ></i>
+                        <span className="info-item">
+                          {
+                            GENDER?.find(
+                              (item) =>
+                                item?.id === employee?.gender?.toString()
+                            )?.name
+                          }
+                        </span>
+                      </div>
+                      <div className="change-font-size custom-icon">
+                        <i
+                          class="fa fa-birthday-cake icn-cake"
+                          aria-hidden="true"
+                        ></i>
+                        <span className="info-item">
+                          {moment(employee?.dateOfBirth).format("DD/MM/YYYY")}
+                        </span>
+                      </div>
+                      <div className="change-font-size custom-icon">
+                        <i class="fa-solid fa-location-dot icn-location"></i>
+                        <span className="info-item">{employee?.address}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="box-bottom">
+            <div className="box-left">
+              <div>
+                <ValidatorForm onSubmit={handleSubmit}>
+                  <div className="box-left-info">
+                    <div>
+                      <div className="box-left-email">
+                        <i
+                          class="fa fa-envelope-o icn-email"
+                          aria-hidden="true"
+                        ></i>
+                        <span className="info-item info-email">
+                          {employee?.email}
+                        </span>
+                      </div>
+                      <div className="box-left-phone">
+                        <i class="fa-solid fa-phone icn-phone"></i>
+                        <span className="info-item info-phone">
+                          {employee?.phone}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="children-sort skill-custom">
+                    <h3 className="change-title">Kỹ năng</h3>
+                    <div className="part-content">
+                      <TextValidator
+                        onChange={handleInputChange}
+                        name="skill"
+                        value={employee?.skill || ""}
+                        fullWidth
+                        validators={["required"]}
+                        errorMessages={["Vui lòng nhập kỹ năng"]}
+                        size="small"
+                        multiline
+                        InputProps={{
+                          readOnly: isViewMode,
+                        }}
+                        contenteditable={!isViewMode ? "true" : "false"}
+                        placeholder="Mô tả các kỹ năng của bạn. Bạn có thể trình bày các kỹ năng tương thích với công việc nhất, càng phù hợp, tỷ lệ được chọn càng cao."
+                        className="textarea-custom"
+                      />
+                    </div>
+                  </div>
+                  <div className="children-sort">
+                    <h3 className="change-title">Ngoại ngữ</h3>
+                    <div className="title-block">
+                      <h4 className="change-title-language">Tiếng Anh</h4>
+                      <div className="rating-child">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                    <div className="title-block">
+                      <h4 className="change-title-language">Tiếng Trung</h4>
+                      <div className="rating-child">
+                        <span></span>
+                        <span></span>
+                        <span className="not-active"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="children-sort">
+                    <h3 className="change-title">Tin học</h3>
+                    <div className="title-block">
+                      <h4 className="change-title-language">Word</h4>
+                      <div className="rating-child">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                      </div>
+                    </div>
+                    <div className="title-block">
+                      <h4 className="change-title-language">Excel</h4>
+                      <div className="rating-child">
+                        <span></span>
+                        <span></span>
+                        <span className="not-active"></span>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="children-sort">
+                    <h3 className="change-title">Hoạt động</h3>
+                    <div className="part-content">
+                      <TextValidator
+                        onChange={handleInputChange}
+                        name="activity"
+                        value={employee?.activity || ""}
+                        fullWidth
+                        validators={["required"]}
+                        errorMessages={["Vui lòng nhập hoạt động"]}
+                        size="small"
+                        multiline
+                        InputProps={{
+                          readOnly: isViewMode,
+                        }}
+                        contenteditable={!isViewMode ? "true" : "false"}
+                        placeholder="Mô tả các hoạt động nổi bật bạn đã làm trong tổ chức của bạn."
+                        className="textarea-custom"
+                      />
+                    </div>
+                  </div>
+                  <Button
+                    variant="contained"
+                    className="primary"
+                    type="submit"
+                    ref={submitRef}
+                    style={{ display: "none" }}
+                  >
+                    Lưu
+                  </Button>
+                </ValidatorForm>
+              </div>
+            </div>
+            {/* Right */}
+            <div className="box-right">
+              <div className="parent-sort">
+                <div className="children-sort box-parent">
+                  <h3 className="change-title">Mục tiêu nghề nghiệp</h3>
+                  <div className="knowledge-content">
+                    <TextValidator
+                      id="standard-basic"
+                      fullWidth
+                      value={employee?.knowledge || ""}
+                      type="text"
+                      name="knowledge"
+                      multiline
+                      className="knowledge-input"
+                      onChange={handleInputChange}
+                      placeholder="Mô tả sơ lược mục tiêu hoặc vị trí bạn mong muốn trong tương lai và có phương hướng cụ thể để thực hiện mục tiêu của bạn bao gồm các mục tiêu ngắn hạn và dài hạn."
+                      InputProps={{
+                        readOnly: isViewMode,
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="parent-sort">
+                <div className="children-sort box-parent">
+                  <ExperiencesComponent
+                    employee={employee}
+                    isViewMode={isViewMode}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 

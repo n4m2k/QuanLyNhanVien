@@ -20,60 +20,87 @@ import {
   import * as EC from "../constants/ProposalConstants";
 
   function* getListPendingProposalSaga() {
-    const response = yield call(getListPendingProposal);
-    if (response?.code === 200) {
-      yield put(getListPendingProposalSuccess(response?.data));
-    } else {
-      yield put(getListPendingProposalFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-  function* getListProposalByEmployeeIdSaga(action) {
-    const response = yield call(getListProposalByEmployeeId , action?.employeeId);
-    if (response?.code === 200) {
-      yield put(getListProposalByEmployeeIdSuccess(response?.data));
- 
-    } else {
-      yield put(getListProposalByEmployeeIdFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-    function* createProposalSaga(action) {
-    const response = yield call( createProposal,  action?.payload , action?.id);
-    if (response?.code === 200) {
-      yield put(createProposalSuccess(response?.data));
-      toast.success("Thành công");
-      yield put(getListProposalByEmployeeIdRequest(action?.id) )
-    } else {
-      yield put(createProposalFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-  function* deleteProposalSaga(action) {
-    const response = yield call( deleteProposal,  action?.payload);
-    if (response?.code === 200) {
-      yield put(deleteProposalSuccess(response?.data));
-      toast.success("Xóa Thành công");
-      yield put(getListProposalByEmployeeIdRequest(action?.employeeId) ) 
-    } else {
-      yield put(deleteProposalFail(response?.message));
-      toast.error(response?.message);
-    }
-  }
-
-  function* updateProposalSaga(action) {
-    const response = yield call( updateProposal , action?.payload?.id ,  action?.payload );
-    if (response?.code === 200) {
-      yield put(updateProposalSuccess(response?.data));
-      toast.success("Cập nhật Thành công");
-      if(action?.employeeId){
-        yield put(getListProposalByEmployeeIdRequest(action?.employeeId) ) 
-      }else{
-        yield put(getListPendingProposalRequest()) 
+    try {
+      const response = yield call(getListPendingProposal);
+      if (response?.code === 200) {
+        yield put(getListPendingProposalSuccess(response?.data));
+      } else {
+        yield put(getListPendingProposalFail(response?.message));
+        toast.error(response?.message);
       }
-    } else {
-      yield put(updateProposalFail(response?.message));
-      toast.error(response?.message);
+    } catch (error) {
+      yield put(getListPendingProposalFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* getListProposalByEmployeeIdSaga(action) {
+    try {
+      const response = yield call(getListProposalByEmployeeId, action?.employeeId);
+      if (response?.code === 200) {
+        yield put(getListProposalByEmployeeIdSuccess(response?.data));
+      } else {
+        yield put(getListProposalByEmployeeIdFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(getListProposalByEmployeeIdFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* createProposalSaga(action) {
+    try {
+      const response = yield call(createProposal, action?.payload, action?.id);
+      if (response?.code === 200) {
+        yield put(createProposalSuccess(response?.data));
+        toast.success("Thành công");
+        yield put(getListProposalByEmployeeIdRequest(action?.id));
+      } else {
+        yield put(createProposalFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(createProposalFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* deleteProposalSaga(action) {
+    try {
+      const response = yield call(deleteProposal, action?.payload);
+      if (response?.code === 200) {
+        yield put(deleteProposalSuccess(response?.data));
+        toast.success("Xóa Thành công");
+        yield put(getListProposalByEmployeeIdRequest(action?.employeeId));
+      } else {
+        yield put(deleteProposalFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(deleteProposalFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
+    }
+  }
+  
+  function* updateProposalSaga(action) {
+    try {
+      const response = yield call(updateProposal, action?.payload?.id, action?.payload);
+      if (response?.code === 200) {
+        yield put(updateProposalSuccess(response?.data));
+        toast.success("Cập nhật Thành công");
+        if (action?.employeeId) {
+          yield put(getListProposalByEmployeeIdRequest(action?.employeeId));
+        } else {
+          yield put(getListPendingProposalRequest());
+        }
+      } else {
+        yield put(updateProposalFail(response?.message));
+        toast.error(response?.message);
+      }
+    } catch (error) {
+      yield put(updateProposalFail("Có lỗi khi lấy API"));
+      toast.error("Có lỗi khi lấy API");
     }
   }
 

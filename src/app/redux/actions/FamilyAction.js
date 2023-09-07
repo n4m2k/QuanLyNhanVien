@@ -8,6 +8,7 @@ import {
   DELETE_FAMILY_FAIL,
   DELETE_FAMILY_REQUEST,
   DELETE_FAMILY_SUCCESS,
+  RESET_FAMILY,
   UPDATE_FAMILY_FAIL,
   UPDATE_FAMILY_REQUEST,
   UPDATE_FAMILY_SUCCESS,
@@ -62,4 +63,10 @@ export const deleteFamilySuccess = (payload) => {
 
 export const deleteFamilyFail = (error) => {
   return { type: DELETE_FAMILY_FAIL, payload: error };
+};
+
+export const resetFamily = () => {
+  return {
+    type: RESET_FAMILY,
+  };
 };

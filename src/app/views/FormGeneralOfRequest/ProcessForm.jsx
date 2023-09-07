@@ -59,7 +59,7 @@ const ProcessForm = ({ processDetail, statusOfForm , setProcessDetail }) => {
         </Grid>
         <Grid container className="mb-10 ">
           <Grid item xs={12}>
-            <div className=" mb-10 mt-14 ">
+            <div className=" mt-14 ">
               <Typography className="font-style ">Ghi chú:</Typography>
               <span>
                   <TextField

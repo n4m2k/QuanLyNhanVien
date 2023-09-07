@@ -17,9 +17,6 @@ import EmployeeDetailDialog from "../Pending/EmployeeDialog/EmployeeInfoDialog";
 import {
   VIEW_ONLY,
   EDIT_END_EMPLOYEE,
-  EDIT_SALARY_INCREASE,
-  EDIT_PROCESS,
-  EDIT_PROPOSAL,
   statusesForSubmitLeader,
   statusesForLeaderAction,
   statusOpenFormSalary,
@@ -32,9 +29,7 @@ import ProcessForm from "./ProcessForm";
 import EndForm from "./EndForm";
 import "../../../styles/views/_formReneral.scss";
 import { STATUS_EMPLOYEE } from "../../Constants/ListStatus";
-
-import { toast } from "react-toastify";
-import { isAfterOrEqualToToday } from "app/Validate/Validate";
+import { isAfterOrEqualToToday, validateFormSubmitLeader } from "app/Validate/Validate";
 import ProposalForm from "./ProposalForm";
 import SubmitLeaderDialog from "../RegisterEmployees/SubmitLeaderDialog";
 
@@ -95,61 +90,26 @@ const GeneralOfRequestLetter = ({
     setOpenSubmitLeaderDialog(false);
   };
 
-  const validateFormSubmitLeader = () => {
-    const isEndDayEmpty = !dataTemp?.endDay;
-    const isEndDayInPast = !isAfterOrEqualToToday(dataTemp?.endDay);
-    const isReasonForEndingEmpty = !dataTemp?.reasonForEnding;
-    if (isEndDayEmpty) {
-      toast.error("Ngày kết thúc không được để trống");
-      return false;
-    } else if (isEndDayInPast) {
-      toast.error("Ngày kết thúc không được là quá khứ");
-      return false;
-    } else if (isReasonForEndingEmpty) {
-      toast.error("Lý do kết thúc không được để trống");
-      return false;
-    } else {
-      return true;
-    }
-  };
 
   const handleSubmission = () => {
     if (statusOfForm === EDIT_END_EMPLOYEE) {
-      if (validateFormSubmitLeader()) setOpenSubmitLeaderDialog(true);
-    } else if (statusOfForm === EDIT_SALARY_INCREASE) {
-      const isStartDayInPast = !isAfterOrEqualToToday(dataTemp?.startDate);
-      if (isStartDayInPast) {
-        toast.error("Ngày Đề xuất không được là quá khứ");
-      } else {
-        setOpenSubmitLeaderDialog(true);
-      }
-    } else if (statusOfForm === EDIT_PROCESS) {
-      const isPromotionDayInPast = !isAfterOrEqualToToday(
-        dataTemp?.promotionDay
+      if (validateFormSubmitLeader(dataTemp?.endDay, dataTemp?.reasonForEnding)) setOpenSubmitLeaderDialog(true);
+    } else  {
+      const isStartDayInPast = !isAfterOrEqualToToday(
+        dataTemp?.startDate || dataTemp?.promotionDay || dataTemp?.proposalDay
       );
-      if (isPromotionDayInPast) {
-        toast.error("Ngày Đề xuất không được là quá khứ");
-      } else {
+      if (!isStartDayInPast) {
         setOpenSubmitLeaderDialog(true);
-      }
-    } else if (statusOfForm === EDIT_PROPOSAL) {
-      const isProposalDateInPast = !isAfterOrEqualToToday(
-        dataTemp?.proposalDate
-      );
-      if (isProposalDateInPast) {
-        toast.error("Ngày Đề xuất không được là quá khứ");
-      } else {
-        setOpenSubmitLeaderDialog(true);
-      }
-    }
+      } 
+    } 
   };
 
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="lg" fullWidth={true}>
       <DialogTitle id="draggable-dialog-title">
         <span className="styleColor">Yêu cầu của nhân viên </span>
-        <IconButton aria-label="close" className={styleClass?.iconClose}>
-          <CloseIcon color="error" onClick={handleClose} />
+        <IconButton aria-label="close" className={styleClass?.iconClose} onClick={handleClose}>
+          <CloseIcon color="error"/>
         </IconButton>
       </DialogTitle>
       <DialogContent dividers>

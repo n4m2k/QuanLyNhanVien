@@ -33,7 +33,7 @@ const AddressNCurrent = ({infoData}) => {
         </Grid>
         <Grid container className="mb-10 ">
           <Grid item xs={12}>
-            <div className=" mb-10 mt-14 ">
+            <div className=" mt-14 ">
               <Typography className="font-style ">
                 Đơn vị công tác:{" "}
                 <span className="input-team-dotted">

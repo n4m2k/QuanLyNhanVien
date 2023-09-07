@@ -56,7 +56,13 @@ const CertificateReducer = (state = initialState, action) => {
         error: null,
         loading: false,
       };
-
+    case CC.RESET_CERTIFICATE:
+      return {
+        ...state,
+        certificates: [],
+        error: null,
+        loading: false,
+      };
     default:
       return state;
   }

@@ -111,3 +111,9 @@ export const getListPendingProcessRequest = (payload) => {
       payload: payload,
     };
   };
+
+  export const clearListProcess = () => {
+    return {
+      type: EC?.CLEAR_LIST_PROCESS,
+    };
+  };
